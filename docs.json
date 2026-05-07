@@ -3,20 +3,17 @@
   "theme": "mint",
   "name": "Kejue",
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0F172A",
-    "light": "#3B82F6",
-    "dark": "#1E40AF"
+    "primary": "#E8663C",
+    "light": "#F0845E",
+    "dark": "#D14E24"
   },
   "appearance": {
     "default": "system"
-  },
-  "seo": {
-    "indexHiddenPages": false
   },
   "api": {
     "baseUrl": "https://api.kejue.co/api/v1",
