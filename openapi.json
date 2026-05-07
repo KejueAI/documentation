@@ -5845,21 +5845,6 @@
             "title": "Static Parameters",
             "description": "Fixed parameters always sent with requests"
           },
-          "system_parameters": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/SystemParameterInput"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "System Parameters",
-            "description": "Parameters whose values are injected by the system at runtime (hidden from the AI). Use for context like call_id, contact_id, etc."
-          },
           "response_schema": {
             "anyOf": [
               {
@@ -6016,7 +6001,8 @@
           "description": {
             "type": "string",
             "title": "Description",
-            "description": "Description for the LLM to understand when/how to use this parameter"
+            "description": "Description for the LLM to understand when/how to use this parameter",
+            "default": ""
           },
           "param_type": {
             "$ref": "#/components/schemas/ParameterType",
@@ -6033,15 +6019,35 @@
             "title": "Required",
             "description": "Whether parameter is required",
             "default": false
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "ai",
+              "system"
+            ],
+            "title": "Source",
+            "description": "Who provides the value: 'ai' (visible to AI) or 'system' (injected from context, hidden from AI)",
+            "default": "ai"
+          },
+          "system_variable": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SystemVariable"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Which system variable to inject when source is 'system' (e.g. call_id, contact_id)"
           }
         },
         "type": "object",
         "required": [
-          "name",
-          "description"
+          "name"
         ],
         "title": "DynamicParameterInput",
-        "description": "A parameter provided by the AI agent at runtime."
+        "description": "A tool parameter \u2014 either filled by the AI or injected by the system.\n\nWhen source is \"ai\" (default): the AI sees this parameter and provides the value.\nWhen source is \"system\": the value is injected from execution context (hidden from AI)."
       },
       "ErrorResponse": {
         "properties": {
@@ -6557,31 +6563,6 @@
         ],
         "title": "StructuredDataField",
         "description": "A field to extract from the conversation after the call."
-      },
-      "SystemParameterInput": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Parameter name in the HTTP request"
-          },
-          "system_variable": {
-            "$ref": "#/components/schemas/SystemVariable",
-            "description": "Which system variable to inject (e.g. call_id, contact_id)"
-          },
-          "location": {
-            "$ref": "#/components/schemas/ParameterLocation",
-            "description": "Where to send: body, query, path, header",
-            "default": "body"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "system_variable"
-        ],
-        "title": "SystemParameterInput",
-        "description": "A parameter whose value is injected by the system at runtime (hidden from the AI).\n\nSystem parameters are resolved from the execution context (e.g. call_id, contact_id).\nUnlike dynamic parameters, they are never exposed to the AI model.\nUnlike static parameters, their values are not fixed \u2014 they change per call/conversation."
       },
       "SystemVariable": {
         "type": "string",
@@ -7134,20 +7115,6 @@
               }
             ],
             "title": "Static Parameters"
-          },
-          "system_parameters": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/SystemParameterInput"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "System Parameters"
           },
           "response_schema": {
             "anyOf": [

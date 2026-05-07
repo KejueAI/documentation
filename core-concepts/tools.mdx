@@ -83,17 +83,18 @@ Custom HTTP tools let you connect your agent to any external API. When the agent
 
 ### Parameters
 
-Custom tools support three types of parameters:
+Each parameter you define has a **source** that controls who provides the value:
 
-- **Dynamic parameters** — values the AI agent fills in based on the conversation context. For example, the customer's order number or the issue description. These are visible to the AI.
-- **Static parameters** — fixed values you configure once, like an API key or account ID. These are always sent with every request and are hidden from the AI.
-- **System parameters** — values injected automatically from the execution context at runtime, like the current call ID or contact ID. These change per call/conversation and are hidden from the AI.
+- **AI Generated** (`source: "ai"`) — the AI fills in the value based on the conversation. You provide a description and type so the AI knows what to supply. These are visible to the AI.
+- **System Injected** (`source: "system"`) — the value is injected automatically from the execution context (e.g. call ID, contact ID). These are hidden from the AI.
 
-Parameters can be routed to different parts of the HTTP request: the request body, query string, URL path, or headers.
+You also have **static parameters** — fixed values with a constant string, useful for API keys or account identifiers. These are hidden from the AI.
 
-### System Parameters
+All parameters can be routed to different parts of the HTTP request: the request body, query string, URL path, or headers.
 
-System parameters let you pass execution context to your external APIs without exposing it to the AI. This is useful when your API needs to know _which_ call or contact triggered the request.
+### System-Injected Parameters
+
+When you set a parameter's source to `system`, you choose which system variable to inject. This lets you pass execution context to your external APIs without exposing it to the AI.
 
 #### Available System Variables
 
@@ -124,17 +125,18 @@ A CRM integration tool that creates a ticket with the call and contact context:
       "name": "subject",
       "description": "Brief summary of the issue",
       "param_type": "string",
-      "required": true
-    }
-  ],
-  "system_parameters": [
+      "required": true,
+      "source": "ai"
+    },
     {
       "name": "call_id",
+      "source": "system",
       "system_variable": "call_id",
       "location": "body"
     },
     {
       "name": "customer_id",
+      "source": "system",
       "system_variable": "contact_id",
       "location": "body"
     }
