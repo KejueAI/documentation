@@ -1,0 +1,58 @@
+---
+title: Introduction
+description: Welcome to the Kejue platform documentation
+icon: book
+---
+
+## Welcome to Kejue
+
+Kejue lets you build and deploy intelligent AI agents that communicate with your customers over voice and chat. This documentation covers the core concepts of the platform and the public API.
+
+## Getting Started
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="webhook" href="/api-reference">
+    Explore all available API endpoints — create calls, manage campaigns, and more.
+  </Card>
+  <Card title="Personas" icon="robot" href="/core-concepts/personas">
+    Learn how to configure your AI agent's identity, voice, and behavior.
+  </Card>
+  <Card title="Tool Calling" icon="wrench" href="/core-concepts/tools">
+    Give your agents the ability to take actions during and after conversations.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
+    Receive real-time notifications when calls and campaigns complete.
+  </Card>
+  <Card title="Inbound Routing" icon="phone-arrow-down-left" href="/guides/inbound-routing">
+    Configure phone numbers to receive inbound calls handled by your AI agents.
+  </Card>
+  <Card title="Mid-Call Context Injection" icon="message-plus" href="/guides/inject-context">
+    Send messages and instructions to your AI agent during a live call.
+  </Card>
+</CardGroup>
+
+## Key Features
+
+- **AI Voice Agents** — Deploy personas that handle inbound and outbound phone calls
+- **Chat Agents** — Connect personas to WhatsApp and other messaging channels
+- **Knowledge Bases** — Give your agents access to your own content via RAG
+- **Tool Calling** — Let agents take actions in real-time or after conversations end
+- **Memory** — Agents remember contacts across conversations
+- **Campaigns** — Batch-call thousands of contacts with shared settings
+- **Webhooks** — Get real-time notifications for all call and campaign events
+
+## Authentication
+
+All API requests require an API key passed in the `X-API-Key` header:
+
+```
+X-API-Key: kej_live_...
+```
+
+API keys are scoped to a workspace. Create and manage keys from the Kejue dashboard under **Settings > API Keys**.
+
+## Base URL
+
+```
+https://api.kejue.co/api/v1
+```

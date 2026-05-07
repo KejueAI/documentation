@@ -1,0 +1,98 @@
+---
+title: Mid-Call Context Injection
+description: Send messages and instructions to your AI agent during a live call
+icon: message-plus
+---
+
+## Overview
+
+Context injection lets you send messages or instructions to your AI agent while a call is in progress. The agent receives the injected content as additional context and can act on it naturally within the conversation.
+
+Use cases:
+
+- Feeding the agent real-time information (e.g. order status lookups)
+- Giving the agent new instructions mid-conversation
+- Passing context from a human supervisor monitoring the call
+
+## Request
+
+```bash
+curl -X POST https://api.kejue.co/api/v1/calls/{call_id}/inject-context \
+  -H "X-API-Key: kej_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The customer'\''s order #12345 shipped yesterday via FedEx.",
+    "urgency": "soon"
+  }'
+```
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `text` | string | Yes | - | The context or instruction to send to the agent |
+| `urgency` | string | No | `"soon"` | Controls when the message is delivered |
+
+## Urgency Levels
+
+| Level | Behavior |
+|-------|----------|
+| `immediate` | Interrupts the current conversation to deliver the message right away |
+| `soon` | Delivers at the next natural pause or speaker turn |
+| `later` | Passive context — the agent incorporates it when relevant |
+
+<Info>
+Use `immediate` sparingly — it interrupts the natural flow. For most cases, `soon` provides the best balance of timeliness and conversational quality.
+</Info>
+
+## Response
+
+Returns `204 No Content` on success.
+
+## Error Handling
+
+| Status | Condition |
+|--------|-----------|
+| `404` | Call not found in this workspace |
+| `409` | Call is not in `in_progress` status |
+| `400` | Invalid urgency value |
+| `502` | Failed to deliver the message to the active call |
+
+## Example: Real-Time CRM Lookup
+
+<CodeGroup>
+
+```javascript Node.js
+const response = await fetch(
+  `https://api.kejue.co/api/v1/calls/${callId}/inject-context`,
+  {
+    method: 'POST',
+    headers: {
+      'X-API-Key': 'kej_live_...',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: 'Customer has an outstanding invoice of $2,500 due in 3 days.',
+      urgency: 'soon',
+    }),
+  }
+);
+// 204 = success
+```
+
+```python Python
+import httpx
+
+response = httpx.post(
+    f"https://api.kejue.co/api/v1/calls/{call_id}/inject-context",
+    headers={
+        "X-API-Key": "kej_live_...",
+        "Content-Type": "application/json",
+    },
+    json={
+        "text": "Customer has an outstanding invoice of $2,500 due in 3 days.",
+        "urgency": "soon",
+    },
+)
+# 204 = success
+```
+
+</CodeGroup>

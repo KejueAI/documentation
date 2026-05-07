@@ -1,0 +1,103 @@
+---
+title: Tool Calling
+description: Give your AI agents the ability to take actions during and after conversations
+icon: wrench
+---
+
+## What Are Tools?
+
+Tools are capabilities you can attach to a persona. When the agent determines it needs to perform an action — like transferring a call, looking up information, or sending a follow-up message — it invokes the appropriate tool.
+
+Kejue provides a set of built-in tools and lets you create custom HTTP tools that call your own APIs.
+
+## Tool Scoping: In-Call vs Post-Call
+
+Each tool attached to a persona is assigned to a specific scope that determines when it can be used:
+
+| Scope | When It Runs | Use Case |
+|-------|-------------|----------|
+| `voice:in-call` | During the live call, in real-time | Transfer calls, play DTMF tones, look up live data |
+| `voice:post-call` | After the call ends, as a background action | Send follow-up messages, update CRM, create tickets |
+| `whatsapp` | During a WhatsApp conversation | Send media, templates, or trigger actions |
+
+<Warning>
+A tool cannot be enabled for both `voice:in-call` and `voice:post-call` at the same time. Choose the scope that matches how you want the tool to be used.
+</Warning>
+
+This separation is important because in-call tools run synchronously during the conversation (the agent waits for the result), while post-call tools run asynchronously after the call ends.
+
+## Built-in Tools
+
+### Voice Tools
+
+These tools interact directly with the call and are only available during live voice calls (`voice:in-call`).
+
+| Tool | Description |
+|------|-------------|
+| `hang_up` | End the call immediately |
+| `warm_transfer` | Transfer the call with context — the AI stays on the line during handoff |
+| `cold_transfer` | Transfer the call directly without staying on the line |
+| `leave_voicemail` | Leave a voicemail message |
+| `play_dtmf` | Play touch-tone digits (for navigating IVR systems) |
+
+### Platform Built-in Tools
+
+These tools interact with the Kejue platform and are available across all scopes.
+
+| Tool | Description |
+|------|-------------|
+| `get_contact_info` | Retrieve information about the current contact |
+| `update_contact_info` | Update the contact's details |
+| `add_contact_note` | Add a note to the contact's record |
+| `set_contact_status` | Update the contact's stage or outcome |
+| `schedule_callback` | Schedule a follow-up call at a specific time |
+| `cancel_callback` | Cancel a previously scheduled callback |
+| `request_removal` | Mark the contact as Do Not Contact |
+| `get_current_time` | Get the current time in a specific timezone |
+
+### Integration Tools
+
+These tools connect with external messaging platforms.
+
+| Tool | Description |
+|------|-------------|
+| `send_media` | Send an image, video, or document via WhatsApp |
+| `send_template` | Send a pre-approved WhatsApp template message |
+| `send_text` | Send a text message via WhatsApp |
+
+## Custom HTTP Tools
+
+Custom HTTP tools let you connect your agent to any external API. When the agent invokes a custom tool, Kejue makes an HTTP request to your endpoint with the parameters the agent provides.
+
+### Creating a Custom Tool
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | A unique name the agent uses to invoke the tool |
+| **Description** | Explains to the agent what the tool does and when to use it |
+| **URL** | The HTTP endpoint to call |
+| **Method** | HTTP method (GET, POST, PUT, PATCH, DELETE) |
+| **Authentication** | Auth type — none, basic, bearer, or API key |
+| **Headers** | Custom headers to include in the request |
+| **Timeout** | Request timeout (1-60 seconds) |
+
+### Parameters
+
+Custom tools support two types of parameters:
+
+- **Dynamic parameters** — values the AI agent fills in based on the conversation context. For example, the customer's order number or the issue description.
+- **Static parameters** — fixed values you configure once, like an API key or account ID. These are always sent with every request.
+
+Parameters can be routed to different parts of the HTTP request: the request body, query string, URL path, or headers.
+
+## Attaching Tools to a Persona
+
+After creating a tool (or choosing a built-in one), you attach it to a persona with a specific channel scope. The attachment specifies:
+
+- Which tool to attach
+- Which channels it's active on (e.g. `voice:in-call`, `voice:post-call`, `whatsapp`)
+- Any tool-specific configuration (like transfer phone numbers)
+
+<Info>
+Use post-call tools for actions that don't need to happen during the live conversation. This keeps calls fast and responsive while still letting your agent take follow-up actions automatically.
+</Info>

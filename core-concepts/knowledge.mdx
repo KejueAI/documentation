@@ -1,0 +1,61 @@
+---
+title: Knowledge
+description: Give your AI agent access to your own content using knowledge bases
+icon: database
+---
+
+## What is a Corpus?
+
+A corpus is a collection of documents that your agent can search and reference during conversations. When a contact asks a question, the agent automatically queries the relevant corpus to find the most accurate answer from your content rather than relying solely on its general knowledge.
+
+This is powered by RAG (Retrieval-Augmented Generation) — documents are embedded and indexed so the agent can quickly find the most relevant passages for any question.
+
+## Supported Document Types
+
+You can add documents to a corpus in two ways:
+
+| Method | Formats | Description |
+|--------|---------|-------------|
+| **Text** | Plain text | Paste or type content directly |
+| **File Upload** | PDF, DOCX, TXT | Upload document files |
+
+## Managing a Corpus
+
+| Action | Description |
+|--------|-------------|
+| Create Corpus | Create a new empty knowledge base |
+| Add Documents | Upload files or add text content to the corpus |
+| List Documents | View all documents in a corpus |
+| Delete Documents | Remove specific documents from the corpus |
+| Query | Search the corpus directly (useful for testing) |
+
+## Attaching to Personas
+
+A corpus is attached to a persona to make it available during conversations. Each persona can have one corpus attached. When attached, the agent automatically gets a `search_knowledge` tool that it can invoke to query the corpus.
+
+You can control the scope of the attachment:
+
+| Scope | Description |
+|-------|-------------|
+| **voice** | Knowledge is only available during voice calls |
+| **chat** | Knowledge is only available during chat conversations |
+| **all** | Knowledge is available across all channels |
+
+<Info>
+Keep your corpus focused on the type of questions your agent will actually receive. A smaller, well-curated corpus will give better results than a large, unfocused one.
+</Info>
+
+## How It Works in Practice
+
+When a contact asks a question during a conversation with your agent:
+
+1. The agent decides the question requires looking up information
+2. It invokes the `search_knowledge` tool with a search query
+3. The most relevant passages from your corpus are returned
+4. The agent uses those passages to formulate an accurate, grounded response
+
+This happens seamlessly — the contact just gets an accurate answer based on your content.
+
+<Info>
+If the corpus doesn't contain information relevant to the question, the agent will fall back to its general knowledge or let the contact know it doesn't have that information, depending on your prompt instructions.
+</Info>

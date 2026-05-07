@@ -1,0 +1,69 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Kejue",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0F172A",
+    "light": "#3B82F6",
+    "dark": "#1E40AF"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "seo": {
+    "indexHiddenPages": false
+  },
+  "api": {
+    "baseUrl": "https://api.kejue.co/api/v1",
+    "auth": {
+      "method": "key",
+      "name": "X-API-Key"
+    },
+    "playground": {
+      "mode": "simple"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "icon": "book",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "core-concepts/personas",
+              "core-concepts/tools",
+              "core-concepts/knowledge",
+              "core-concepts/memory"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/webhooks",
+              "guides/inbound-routing",
+              "guides/inject-context"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "square-terminal",
+        "openapi": "openapi.json"
+      }
+    ]
+  },
+  "footerSocials": {
+    "website": "https://kejue.co"
+  }
+}

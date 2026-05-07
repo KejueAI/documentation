@@ -1,0 +1,256 @@
+---
+title: Webhooks
+description: Receive real-time notifications when events happen on the Kejue platform
+icon: webhook
+---
+
+## Overview
+
+Webhooks let you receive real-time notifications when events happen on the Kejue platform. When an event occurs, Kejue sends an HTTP POST request to your configured URL with a JSON payload describing the event.
+
+## Event Types
+
+| Event | Description |
+|-------|-------------|
+| `call.started` | A call has been answered and connected |
+| `call.ended` | A call has ended (before post-call analysis) |
+| `call.analyzed` | Post-call analysis is complete — full results available |
+| `campaign.started` | A campaign has started processing |
+| `campaign.ended` | A campaign has completed, been cancelled, or failed |
+| `campaign.paused` | A campaign has been paused |
+| `campaign.resumed` | A paused campaign has been resumed |
+| `campaign.failed` | A campaign has failed due to an error |
+
+<Info>
+Use the wildcard `*` when creating a subscription to receive all event types.
+</Info>
+
+## Payload Format
+
+All webhook payloads follow the same envelope structure:
+
+```json
+{
+  "event": "call.ended",
+  "event_id": "evt_abc123",
+  "workspace_id": "ws_xyz",
+  "timestamp": "2025-01-15T10:30:00Z",
+  "data": {},
+  "metadata": {}
+}
+```
+
+## Call Events
+
+### call.started
+
+Fired when a call is answered and connected.
+
+```json
+{
+  "event": "call.started",
+  "data": {
+    "job_id": "job_123",
+    "conversation_id": "conv_456",
+    "contact_id": "ct_789",
+    "persona_id": "per_abc",
+    "campaign_id": null,
+    "direction": "outbound",
+    "channel": "voice",
+    "job_type": "outbound_call",
+    "attempt_number": 1,
+    "started_at": "2025-01-15T10:30:00Z",
+    "contact": {
+      "id": "ct_789",
+      "name": "John Doe",
+      "phone": "+14155551234"
+    }
+  }
+}
+```
+
+### call.ended
+
+Fired when a call ends. Includes timing, status, transcript, and recording URL.
+
+<Warning>
+This event fires **before** post-call analysis. Use `call.analyzed` if you need summary, score, and outcome fields.
+</Warning>
+
+```json
+{
+  "event": "call.ended",
+  "data": {
+    "job_id": "job_123",
+    "contact_id": "ct_789",
+    "status": "completed",
+    "ended_reason": "agent_hangup",
+    "duration_seconds": 295,
+    "transcript": "Agent: Hello, this is Sara from...",
+    "recording_url": "https://recordings.kejue.co/...",
+    "retry": {
+      "will_retry": false,
+      "next_retry_at": null,
+      "attempt_number": 1,
+      "max_attempts": 3
+    }
+  }
+}
+```
+
+| Status | Description |
+|--------|-------------|
+| `completed` | Call connected and conversation took place |
+| `no_answer` | Contact did not answer |
+| `busy` | Line was busy |
+| `failed` | Call failed due to a technical issue |
+| `voicemail` | Call went to voicemail |
+
+### call.analyzed
+
+Fired after post-call analysis completes. Contains summary, outcome, score, structured data, and tool execution results.
+
+```json
+{
+  "event": "call.analyzed",
+  "data": {
+    "call": {
+      "id": "job_123",
+      "status": "completed",
+      "summary": "Discussed pricing plans and scheduled a demo...",
+      "outcome_id": "interested",
+      "score": 85,
+      "structured_data": {
+        "interested_product": "Enterprise Plan",
+        "budget_range": "$500-1000/mo"
+      }
+    },
+    "contact": {
+      "id": "ct_789",
+      "name": "John Doe",
+      "status": "interested"
+    },
+    "in_call_tools": [],
+    "post_call_actions": []
+  }
+}
+```
+
+## Campaign Events
+
+### campaign.ended
+
+Fired when a campaign finishes. Includes full statistics and performance metrics.
+
+```json
+{
+  "event": "campaign.ended",
+  "data": {
+    "campaign_id": "camp_abc",
+    "campaign_name": "Q1 Outreach",
+    "end_reason": "completed",
+    "stats": {
+      "total_contacts": 500,
+      "completed": 420,
+      "no_answer": 50,
+      "failed": 10,
+      "voicemail": 20
+    },
+    "performance": {
+      "connect_rate_percent": 84.0,
+      "completion_rate_percent": 86.0,
+      "average_call_duration_seconds": 120
+    }
+  }
+}
+```
+
+| End Reason | Description |
+|------------|-------------|
+| `completed` | All contacts have been processed |
+| `cancelled` | Campaign was manually cancelled |
+| `failed` | Campaign failed due to infrastructure issues |
+
+## Webhook Signing & Verification
+
+Kejue signs webhook payloads so you can verify they're authentic.
+
+| Method | Headers Sent | How to Verify |
+|--------|-------------|---------------|
+| **hmac_sha256** (default) | `X-Kejue-Signature`, `X-Kejue-Timestamp` | `HMAC-SHA256(secret, "{timestamp}.{body}")` |
+| **hmac_sha1** | `X-Kejue-Signature`, `X-Kejue-Timestamp` | `HMAC-SHA1(secret, "{timestamp}.{body}")` |
+| **bearer** | `Authorization: Bearer {secret}` | Compare token |
+| **basic_auth** | `Authorization: Basic {base64}` | Decode and compare |
+| **none** | No auth headers | No verification |
+
+### Verification Examples
+
+<CodeGroup>
+
+```javascript Node.js
+const crypto = require('crypto');
+
+function verifyWebhook(body, signature, timestamp, secret) {
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(`${timestamp}.${body}`)
+    .digest('hex');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(`sha256=${expected}`),
+    Buffer.from(signature)
+  );
+}
+```
+
+```python Python
+import hmac
+import hashlib
+
+def verify_webhook(body: bytes, signature: str, timestamp: str, secret: str) -> bool:
+    signed_payload = f"{timestamp}.".encode() + body
+    expected = hmac.new(
+        secret.encode(), signed_payload, hashlib.sha256
+    ).hexdigest()
+    received = signature.split("=")[1]
+    return hmac.compare_digest(expected, received)
+```
+
+</CodeGroup>
+
+<Warning>
+Always use constant-time comparison functions to prevent timing attacks.
+</Warning>
+
+## Delivery & Retries
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| **Timeout** | 5 seconds | How long to wait for your server to respond |
+| **Max Retries** | 3 | Maximum number of retry attempts |
+| **Backoff** | 500ms | Initial delay between retries (doubles each attempt) |
+
+<Info>
+Only 5xx server errors and timeouts trigger retries. 4xx responses are treated as permanent failures and are not retried.
+</Info>
+
+## Inline Webhooks
+
+You can pass webhooks inline when creating a call. Inline webhooks override subscription-based webhooks for that specific call.
+
+```json
+{
+  "contact_id": "ct_789",
+  "persona_id": "per_abc",
+  "config": {
+    "webhooks": [
+      {
+        "url": "https://your-server.com/webhook",
+        "events": ["call.ended", "call.analyzed"],
+        "signing_method": "hmac_sha256",
+        "secret": "your-secret-key"
+      }
+    ]
+  }
+}
+```

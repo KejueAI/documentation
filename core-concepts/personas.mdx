@@ -1,0 +1,65 @@
+---
+title: Personas
+description: Configure your AI agent's identity, voice, and behavior
+icon: robot
+---
+
+## What is a Persona?
+
+A persona is the complete identity of your AI agent — its name, instructions, and how it communicates across voice and chat channels. Every agent you deploy on Kejue is defined by a persona.
+
+You can create multiple personas for different use cases — a sales agent, a support agent, an appointment scheduler — each with its own instructions and capabilities.
+
+## Key Properties
+
+| Property | Description |
+|----------|-------------|
+| **Name** | Display name for your persona (e.g. "Sara", "Support Agent") |
+| **Memory** | Whether the persona remembers previous conversations with each contact |
+
+## Voice Configurations
+
+Voice configurations define how your persona speaks in a given language. Each persona can have multiple voice configurations to support different languages and locales.
+
+### Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Language & Locale** | The language the agent speaks (e.g. en-US, ar-AE) |
+| **Prompt** | The system prompt — detailed instructions for this voice configuration |
+| **Voice** | The voice the agent uses (selected from available voices) |
+| **First Speaker** | Whether the agent or the user speaks first |
+| **First Message** | What the agent says when it starts the conversation |
+| **Model** | The LLM model used for this configuration |
+| **Temperature** | Controls response creativity (lower = more deterministic) |
+| **Max Duration** | Maximum call length in seconds |
+| **Silence Timeout** | How long to wait before ending a silent call |
+| **Recording** | Whether calls are recorded |
+
+<Info>
+Set a clear first message for outbound calls so the person who answers knows who is calling and why. For inbound calls, you can set the first speaker to "user" and let the caller speak first.
+</Info>
+
+## Chat Configuration
+
+Each persona can also have a chat configuration for text-based channels like WhatsApp. The chat configuration has its own prompt, model, and settings independent of voice.
+
+| Setting | Description |
+|---------|-------------|
+| **Prompt** | System prompt for chat conversations |
+| **Model** | LLM model for chat responses |
+| **Temperature** | Response creativity for chat |
+| **Max Tokens** | Maximum response length |
+| **Forward to Voice** | Option to escalate chat conversations to a voice call |
+
+## Versioning
+
+Personas support a draft/production versioning workflow. When you edit a persona, you're working on a draft. Once you're satisfied with the changes, you publish the draft to make it the active production version.
+
+This ensures that live calls always use a stable, tested configuration while you iterate on improvements separately.
+
+## Next Steps
+
+- Attach [tools](/core-concepts/tools) to give your persona capabilities
+- Connect a [knowledge base](/core-concepts/knowledge) for RAG-powered answers
+- Enable [memory](/core-concepts/memory) for personalized conversations

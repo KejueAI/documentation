@@ -1,0 +1,87 @@
+---
+title: Inbound Routing
+description: Configure phone numbers to receive inbound calls handled by your AI agents
+icon: phone-arrow-down-left
+---
+
+## Overview
+
+Inbound routing connects a phone number to a voice agent so that incoming calls are automatically handled by that agent. Setup differs depending on whether you manage your own Twilio account (BYOT) or use Kejue's platform-managed numbers.
+
+| Mode | How It's Detected | Approval | SIP Support |
+|------|-------------------|----------|-------------|
+| **BYOT (Self-Serve)** | Your workspace has its own API key configured | Auto-approved | Yes |
+| **Platform-Managed** | No API key on workspace | Requires admin approval | No |
+
+## Prerequisites
+
+1. A **phone number** registered in Kejue with `is_inbound` enabled
+2. An active **voice config** (agent) attached to a persona
+
+## Setting Up Inbound Routing
+
+### 1. Configure inbound routing
+
+```bash
+curl -X PUT https://api.kejue.co/api/v1/phone-numbers/{phone_id}/inbound-routing \
+  -H "X-API-Key: kej_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "voice_config_id": "vc_abc123"
+  }'
+```
+
+<Info>
+If the voice config hasn't been deployed yet, the system will auto-deploy it before configuring routing.
+</Info>
+
+### 2. Handle the response based on your provisioning mode
+
+<Tabs>
+  <Tab title="BYOT (Self-Serve)">
+    The response includes a `webhook_url` and the status is immediately `approved`:
+
+    ```json
+    {
+      "phone_id": "phone_123",
+      "voice_config_id": "vc_abc123",
+      "inbound_routing_status": "approved",
+      "webhook_url": "https://api.kejue.co/inbound/vc_abc123/twiml",
+      "provisioning": "self_serve"
+    }
+    ```
+
+    **Next step:** Set the `webhook_url` as the **Voice URL** (HTTP POST) on your Twilio phone number.
+  </Tab>
+  <Tab title="Platform-Managed">
+    The status is set to `pending` and requires admin approval:
+
+    ```json
+    {
+      "phone_id": "phone_123",
+      "voice_config_id": "vc_abc123",
+      "inbound_routing_status": "pending",
+      "message": "Inbound routing request submitted, pending admin approval",
+      "provisioning": "platform_managed"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## How Inbound Calls Work
+
+```
+Incoming call → Twilio sends webhook to Kejue → Kejue looks up your voice config → Your AI agent handles the call
+```
+
+For BYOT, the webhook URL you configure on your Twilio number is:
+```
+https://api.kejue.co/inbound/{voice_config_id}/twiml
+```
+
+## Removing Inbound Routing
+
+```bash
+curl -X DELETE https://api.kejue.co/api/v1/phone-numbers/{phone_id}/inbound-routing \
+  -H "X-API-Key: kej_live_..."
+```

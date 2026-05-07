@@ -1,0 +1,42 @@
+---
+title: Memory
+description: How AI agents remember information about contacts across conversations
+icon: brain
+---
+
+## How Memory Works
+
+When memory is enabled on a persona, the platform automatically maintains a memory document for each contact. This document captures facts, preferences, and context from every conversation the contact has with your agents.
+
+Before each new conversation, the relevant memory is loaded and injected into the agent's context. This means your agent can reference past interactions naturally — for example, remembering a customer's name, their last order, or an issue they mentioned previously.
+
+## What Gets Remembered
+
+Memory captures factual information from conversations, including:
+
+- Contact details shared during calls (name, preferences, etc.)
+- Key topics discussed
+- Decisions made or actions taken
+- Follow-up items or commitments
+- Relationship context with each persona
+
+## Memory Scope
+
+Memory operates at two levels:
+
+- **Global memory** — shared across all personas. Facts about the contact that any agent should know (e.g. their name, company, timezone).
+- **Persona-scoped summary** — specific to a single persona. Captures the relationship context between that particular agent and the contact (e.g. "last discussed pricing options on March 5th").
+
+## Enabling Memory
+
+Memory is controlled per persona with the `memory_enabled` setting. When enabled, the platform automatically handles storing and retrieving memory — no additional configuration is needed.
+
+<Info>
+Memory is channel-agnostic. If a contact calls your agent and later messages on WhatsApp, the same memory is available in both interactions.
+</Info>
+
+## How Memory Updates
+
+After each conversation ends, the platform analyzes the conversation and updates the contact's memory document with any new information. The memory is continuously refined — outdated facts are replaced, and new details are added.
+
+This happens automatically as part of the post-call analysis pipeline. You don't need to configure or trigger memory updates manually.
