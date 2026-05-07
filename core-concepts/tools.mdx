@@ -83,12 +83,70 @@ Custom HTTP tools let you connect your agent to any external API. When the agent
 
 ### Parameters
 
-Custom tools support two types of parameters:
+Custom tools support three types of parameters:
 
-- **Dynamic parameters** — values the AI agent fills in based on the conversation context. For example, the customer's order number or the issue description.
-- **Static parameters** — fixed values you configure once, like an API key or account ID. These are always sent with every request.
+- **Dynamic parameters** — values the AI agent fills in based on the conversation context. For example, the customer's order number or the issue description. These are visible to the AI.
+- **Static parameters** — fixed values you configure once, like an API key or account ID. These are always sent with every request and are hidden from the AI.
+- **System parameters** — values injected automatically from the execution context at runtime, like the current call ID or contact ID. These change per call/conversation and are hidden from the AI.
 
 Parameters can be routed to different parts of the HTTP request: the request body, query string, URL path, or headers.
+
+### System Parameters
+
+System parameters let you pass execution context to your external APIs without exposing it to the AI. This is useful when your API needs to know _which_ call or contact triggered the request.
+
+#### Available System Variables
+
+| Variable | Description |
+|----------|-------------|
+| `call_id` | Current call job ID |
+| `workspace_id` | Workspace ID |
+| `contact_id` | Contact being spoken to |
+| `conversation_id` | Current conversation ID |
+| `persona_id` | Persona/agent in use |
+| `channel` | Channel type (`voice`, `whatsapp`, `sms`, `web`) |
+| `campaign_id` | Campaign ID (if part of a campaign) |
+
+#### Example
+
+A CRM integration tool that creates a ticket with the call and contact context:
+
+```json
+{
+  "name": "create_ticket",
+  "description": "Create a support ticket when the customer reports an issue",
+  "http_config": {
+    "url": "https://api.example.com/tickets",
+    "method": "POST"
+  },
+  "dynamic_parameters": [
+    {
+      "name": "subject",
+      "description": "Brief summary of the issue",
+      "param_type": "string",
+      "required": true
+    }
+  ],
+  "system_parameters": [
+    {
+      "name": "call_id",
+      "system_variable": "call_id",
+      "location": "body"
+    },
+    {
+      "name": "customer_id",
+      "system_variable": "contact_id",
+      "location": "body"
+    }
+  ]
+}
+```
+
+The AI only sees `subject` as a parameter. The `call_id` and `customer_id` are injected silently by the system.
+
+<Info>
+If a system variable is not available in the current context (e.g., `campaign_id` for a non-campaign call), it is omitted from the request.
+</Info>
 
 ## Attaching Tools to a Persona
 

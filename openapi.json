@@ -5845,6 +5845,21 @@
             "title": "Static Parameters",
             "description": "Fixed parameters always sent with requests"
           },
+          "system_parameters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SystemParameterInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Parameters",
+            "description": "Parameters whose values are injected by the system at runtime (hidden from the AI). Use for context like call_id, contact_id, etc."
+          },
           "response_schema": {
             "anyOf": [
               {
@@ -6543,6 +6558,45 @@
         "title": "StructuredDataField",
         "description": "A field to extract from the conversation after the call."
       },
+      "SystemParameterInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Parameter name in the HTTP request"
+          },
+          "system_variable": {
+            "$ref": "#/components/schemas/SystemVariable",
+            "description": "Which system variable to inject (e.g. call_id, contact_id)"
+          },
+          "location": {
+            "$ref": "#/components/schemas/ParameterLocation",
+            "description": "Where to send: body, query, path, header",
+            "default": "body"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "system_variable"
+        ],
+        "title": "SystemParameterInput",
+        "description": "A parameter whose value is injected by the system at runtime (hidden from the AI).\n\nSystem parameters are resolved from the execution context (e.g. call_id, contact_id).\nUnlike dynamic parameters, they are never exposed to the AI model.\nUnlike static parameters, their values are not fixed \u2014 they change per call/conversation."
+      },
+      "SystemVariable": {
+        "type": "string",
+        "enum": [
+          "call_id",
+          "workspace_id",
+          "contact_id",
+          "conversation_id",
+          "persona_id",
+          "channel",
+          "campaign_id"
+        ],
+        "title": "SystemVariable",
+        "description": "System variables that can be injected into tool parameters at runtime.\n\nThese are resolved from ToolContext during execution and are hidden from the AI."
+      },
       "TagDefinition": {
         "properties": {
           "name": {
@@ -7081,6 +7135,20 @@
             ],
             "title": "Static Parameters"
           },
+          "system_parameters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SystemParameterInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Parameters"
+          },
           "response_schema": {
             "anyOf": [
               {
@@ -7250,6 +7318,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",
@@ -8119,7 +8194,7 @@
     },
     {
       "name": "Tools",
-      "description": "Create and manage custom HTTP tools that agents can invoke during calls. Tools let agents fetch data, trigger actions, or integrate with external systems mid-conversation."
+      "description": "Create and manage custom HTTP tools that agents can invoke during calls. Tools let agents fetch data, trigger actions, or integrate with external systems mid-conversation.\n\nEach tool supports three parameter types:\n- **Dynamic parameters** \u2014 filled by the AI at runtime (visible to the AI)\n- **Static parameters** \u2014 fixed values sent with every invocation (hidden from the AI)\n- **System parameters** \u2014 values injected from the execution context at runtime, such as `call_id`, `contact_id`, or `workspace_id` (hidden from the AI)"
     },
     {
       "name": "Voices",
