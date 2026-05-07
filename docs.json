@@ -1,5 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
   "name": "Kejue",
   "logo": {
     "light": "/logo/light.svg",
@@ -63,7 +64,9 @@
       }
     ]
   },
-  "footerSocials": {
-    "website": "https://kejue.co"
+  "footer": {
+    "socials": {
+      "website": "https://kejue.co"
+    }
   }
 }
