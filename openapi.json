@@ -3990,7 +3990,7 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Config",
-            "description": "Tool-specific config"
+            "description": "Tool-specific configuration. The shape depends on the tool \u2014 see the Tools guide for the full schema of each builtin.\n\n**Examples for selected builtins:**\n\n`agent_transfer` \u2014 transfer the live call to a different persona:\n```json\n{\n  \"targets\": [\n    {\n      \"key\": \"billing\",\n      \"persona_id\": \"<persona-uuid>\",\n      \"voice_config_id\": \"<voice-config-uuid>\",\n      \"when_to_use\": \"Caller has questions about invoices, refunds, or payments.\"\n    },\n    {\n      \"key\": \"tech_support\",\n      \"persona_id\": \"<persona-uuid>\",\n      \"when_to_use\": \"Caller is reporting a technical issue with the product.\"\n    }\n  ]\n}\n```\n\n`create_call` \u2014 create a new outbound call from inside a conversation:\n```json\n{\n  \"default_persona_id\": \"<persona-uuid>\",\n  \"default_context\": \"Follow-up call about the contact's inquiry.\",\n  \"allow_persona_override\": false\n}\n```"
           }
         },
         "type": "object",

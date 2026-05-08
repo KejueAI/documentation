@@ -54,6 +54,65 @@ These tools interact with the Kejue platform and are available across all scopes
 | `cancel_callback` | Cancel a previously scheduled callback |
 | `request_removal` | Mark the contact as Do Not Contact |
 | `get_current_time` | Get the current time in a specific timezone |
+| `agent_transfer` | Transfer the live call to a different persona via call stages (in-call only) |
+| `create_call` | Create a new outbound call to a contact on behalf of a persona |
+
+#### `agent_transfer`
+
+Hands the live call off to a different persona mid-conversation. Configure one or more transfer targets — the AI picks among them based on each target's `when_to_use` description.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `targets` | array | **Required.** List of transfer targets. |
+| `targets[].key` | string | **Required.** Unique slug the AI uses to pick this target (e.g. `billing`). |
+| `targets[].persona_id` | string | **Required.** ID of the persona to transfer to. |
+| `targets[].voice_config_id` | string | Optional. Voice config to use on the new stage; defaults to the target persona's default. |
+| `targets[].when_to_use` | string | **Required.** Natural-language hint describing when to choose this target. |
+
+```json
+{
+  "tool_name": "agent_transfer",
+  "channels": ["voice:in-call"],
+  "config": {
+    "targets": [
+      {
+        "key": "billing",
+        "persona_id": "prs_01H...",
+        "when_to_use": "Caller has questions about invoices, refunds, or payments."
+      },
+      {
+        "key": "tech_support",
+        "persona_id": "prs_02K...",
+        "voice_config_id": "vc_03L...",
+        "when_to_use": "Caller is reporting a technical issue with the product."
+      }
+    ]
+  }
+}
+```
+
+#### `create_call`
+
+Lets the agent dial a contact (now or scheduled) on behalf of a persona. The new call runs as a separate session — it does not interrupt the current conversation.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `default_persona_id` | string | Persona to use when the AI does not specify one. |
+| `default_voice_config_id` | string | Optional. Specific voice config (agent) to use; falls back to the persona's default when omitted. |
+| `default_context` | string | Default context shared with the receiving persona if the AI does not supply one. |
+| `allow_persona_override` | boolean | If `true`, the AI may pick a different persona via the `persona_id` parameter. Defaults to `false`. |
+
+```json
+{
+  "tool_name": "create_call",
+  "channels": ["voice:in-call", "voice:post-call"],
+  "config": {
+    "default_persona_id": "prs_01H...",
+    "default_context": "Follow-up call about the contact's inquiry.",
+    "allow_persona_override": false
+  }
+}
+```
 
 ### Integration Tools
 
