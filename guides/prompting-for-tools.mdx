@@ -1,0 +1,136 @@
+---
+title: Prompting Agents for Tools
+description: How to write persona instructions that guide the AI to use built-in tools effectively
+icon: message-bot
+---
+
+## Overview
+
+When you attach tools to a persona, the AI automatically knows they exist. However, **your system prompt determines when and how the agent uses them**. A well-written prompt tells the agent the conditions under which to invoke each tool.
+
+You reference tools by their **internal name** in your persona instructions.
+
+---
+
+## Voice Tools
+
+These are available during live calls (`voice:in-call`).
+
+### `hang_up`
+
+Ends the call immediately.
+
+```text
+Once you've confirmed the appointment and said goodbye, use hang_up to end the call.
+Do not hang up while the customer is still speaking.
+```
+
+### `warm_transfer`
+
+Transfers the call with context — you stay on the line during the handoff to introduce the caller.
+
+```text
+If the caller asks to speak with a manager, use warm_transfer.
+Before transferring, let the caller know you're connecting them and briefly explain
+the situation to the manager when they pick up.
+```
+
+### `cold_transfer`
+
+Transfers the call immediately without staying on the line.
+
+```text
+If the caller requests the billing department, use cold_transfer.
+Let them know you're transferring them before you do it.
+```
+
+### `leave_voicemail`
+
+Leaves a voicemail message when the contact doesn't answer.
+
+```text
+If the call goes to voicemail, use leave_voicemail with a brief message:
+introduce yourself, state the reason for calling, and leave a callback number.
+Keep it under 30 seconds.
+```
+
+### `play_dtmf`
+
+Plays touch-tone digits. Useful when your agent needs to navigate phone menus (IVR systems).
+
+```text
+When you reach the automated menu, use play_dtmf to press 2 for sales.
+If prompted for an extension, dial 4501.
+```
+
+
+---
+
+## Multi-Agent Tools
+
+### `agent_transfer`
+
+Transfers the live call to a different AI persona mid-call.
+
+```text
+If the caller wants to discuss a technical issue, use agent_transfer with
+target_key "technical_support". Let the caller know you're connecting them
+with a specialist.
+```
+
+### `create_call`
+
+Creates a new outbound call as a separate session.
+
+```text
+If the customer asks you to call their colleague to confirm availability,
+use create_call with the colleague's phone number and provide context about
+why you're calling.
+```
+
+---
+
+## Prompting Best Practices
+
+<AccordionGroup>
+  <Accordion title="Be specific about when to use a tool">
+    Don't just say "transfer if needed." Specify the exact conditions:
+
+    ```text
+    Use warm_transfer if the caller explicitly asks for a human agent,
+    or if you cannot resolve their issue after two attempts.
+    ```
+  </Accordion>
+
+  <Accordion title="Tell the agent what to say before using a tool">
+    The agent should communicate with the caller before taking action:
+
+    ```text
+    Before using cold_transfer, always tell the caller:
+    "Let me connect you with our billing team now."
+    ```
+  </Accordion>
+
+  <Accordion title="Set guardrails on when NOT to use a tool">
+    Prevent unwanted behavior by being explicit about restrictions:
+
+    ```text
+    Never use hang_up while the customer is mid-sentence.
+    Only hang up after they've confirmed they have no further questions.
+    ```
+  </Accordion>
+
+  <Accordion title="Combine tools in sequences">
+    You can instruct the agent to use multiple tools in order:
+
+    ```text
+    When the caller needs to be transferred:
+    1. Confirm with the caller that you're transferring them
+    2. Use warm_transfer to connect them with the appropriate team
+    ```
+  </Accordion>
+
+  <Accordion title="Reference tool names exactly as shown">
+    Always use the exact internal name (e.g., `warm_transfer`, not "transfer warmly" or "do a warm transfer"). The AI maps your instructions to the tool by its name.
+  </Accordion>
+</AccordionGroup>

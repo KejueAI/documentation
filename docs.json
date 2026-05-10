@@ -47,6 +47,7 @@
           {
             "group": "Guides",
             "pages": [
+              "guides/prompting-for-tools",
               "guides/webhooks",
               "guides/inbound-routing",
               "guides/inject-context"
