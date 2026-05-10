@@ -8,7 +8,7 @@ icon: message-bot
 
 When you attach tools to a persona, the AI automatically knows they exist. However, **your system prompt determines when and how the agent uses them**. A well-written prompt tells the agent the conditions under which to invoke each tool.
 
-You reference tools by their **internal name** in your persona instructions.
+You reference tools by their **model-facing name** in your persona instructions. These are the names the AI actually sees and calls.
 
 ---
 
@@ -16,53 +16,100 @@ You reference tools by their **internal name** in your persona instructions.
 
 These are available during live calls (`voice:in-call`).
 
-### `hang_up`
+### `hangUp`
 
-Ends the call immediately.
+Ends the call.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `reason` | string | No | A brief reason for hanging up |
 
 ```text
-Once you've confirmed the appointment and said goodbye, use hang_up to end the call.
+Once you've confirmed the appointment and said goodbye, use hangUp to end the call.
 Do not hang up while the customer is still speaking.
 ```
 
-### `warm_transfer`
+---
 
-Transfers the call with context — you stay on the line during the handoff to introduce the caller.
+### `transferCall`
+
+Transfers the call to another party. Used for both warm and cold transfers — the behavior depends on how the tool is configured on the persona.
+
+**Warm transfer** (AI stays on the line during handoff):
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target` | string | Depends on config | The transfer destination (phone number or SIP URI). Only provided by the AI if configured with dynamic targets. |
+| `context` | string | No | Context from the conversation to share with the new party |
+
+**Cold transfer** (immediate transfer, AI disconnects):
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target` | string | Depends on config | The transfer destination. Only provided by the AI if configured with dynamic targets. |
+
+<Info>
+When the transfer target is pre-configured (static), the AI does not need to provide `target` — it's injected automatically. When configured with dynamic targets, the AI decides where to transfer based on the conversation.
+</Info>
 
 ```text
-If the caller asks to speak with a manager, use warm_transfer.
-Before transferring, let the caller know you're connecting them and briefly explain
-the situation to the manager when they pick up.
+If the caller asks to speak with a manager, use transferCall and provide context
+about what the caller needs help with.
+
+If the caller requests the billing department, use transferCall to connect them.
+Let them know you're transferring before you do it.
 ```
 
-### `cold_transfer`
+---
 
-Transfers the call immediately without staying on the line.
+### `leaveVoicemail`
 
-```text
-If the caller requests the billing department, use cold_transfer.
-Let them know you're transferring them before you do it.
-```
+Leaves a voicemail and ends the call.
 
-### `leave_voicemail`
-
-Leaves a voicemail message when the contact doesn't answer.
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `message` | string | Yes | The voicemail message to leave |
 
 ```text
-If the call goes to voicemail, use leave_voicemail with a brief message:
+If the call goes to voicemail, use leaveVoicemail with a brief message:
 introduce yourself, state the reason for calling, and leave a callback number.
 Keep it under 30 seconds.
 ```
 
-### `play_dtmf`
+---
+
+### `playDtmfSounds`
 
 Plays touch-tone digits. Useful when your agent needs to navigate phone menus (IVR systems).
 
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `digits` | string | Yes | The digits to play. May include `0-9`, `*`, or `#` |
+
 ```text
-When you reach the automated menu, use play_dtmf to press 2 for sales.
+When you reach the automated menu, use playDtmfSounds to press 2 for sales.
 If prompted for an extension, dial 4501.
 ```
 
+---
+
+### `queryCorpus`
+
+Searches the attached knowledge base for relevant information.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `query` | string | Yes | What to search for |
+| `max_results` | integer | No | How many results to return (1-20, default 5) |
+
+<Info>
+This tool is automatically available when a knowledge base is attached to the persona. You don't need to manually enable it.
+</Info>
+
+```text
+If the caller asks a question about our policies or pricing, use queryCorpus
+to look up the answer before responding. Don't guess — always check the knowledge base first.
+```
 
 ---
 
@@ -70,22 +117,37 @@ If prompted for an extension, dial 4501.
 
 ### `agent_transfer`
 
-Transfers the live call to a different AI persona mid-call.
+Transfers the live call to a different AI persona mid-call. The new persona takes over with its own system prompt, voice, and tools.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target_key` | string | Yes | Key of the target persona to transfer to (matches one of the configured targets) |
+| `handoff_message` | string | No | One-line context to share with the new agent |
 
 ```text
 If the caller wants to discuss a technical issue, use agent_transfer with
-target_key "technical_support". Let the caller know you're connecting them
-with a specialist.
+target_key "technical_support" and include a handoff_message summarizing
+what the caller needs. Let the caller know you're connecting them with a specialist.
 ```
+
+---
 
 ### `create_call`
 
-Creates a new outbound call as a separate session.
+Creates a new outbound call as a separate session. Does not affect the current call.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `phone_number` | string | No | E.164 phone number to call (provide if no contact_id) |
+| `contact_id` | string | No | Existing contact ID to call |
+| `persona_id` | string | No | Persona to make the call (defaults to configured persona) |
+| `context` | string | No | Reason/context for the call, shared with the receiving persona |
+| `external_reference` | string | No | Optional external reference for tracking |
 
 ```text
 If the customer asks you to call their colleague to confirm availability,
 use create_call with the colleague's phone number and provide context about
-why you're calling.
+why you're calling them.
 ```
 
 ---
@@ -97,7 +159,7 @@ why you're calling.
     Don't just say "transfer if needed." Specify the exact conditions:
 
     ```text
-    Use warm_transfer if the caller explicitly asks for a human agent,
+    Use transferCall if the caller explicitly asks for a human agent,
     or if you cannot resolve their issue after two attempts.
     ```
   </Accordion>
@@ -106,7 +168,7 @@ why you're calling.
     The agent should communicate with the caller before taking action:
 
     ```text
-    Before using cold_transfer, always tell the caller:
+    Before using transferCall, always tell the caller:
     "Let me connect you with our billing team now."
     ```
   </Accordion>
@@ -115,7 +177,7 @@ why you're calling.
     Prevent unwanted behavior by being explicit about restrictions:
 
     ```text
-    Never use hang_up while the customer is mid-sentence.
+    Never use hangUp while the customer is mid-sentence.
     Only hang up after they've confirmed they have no further questions.
     ```
   </Accordion>
@@ -126,11 +188,11 @@ why you're calling.
     ```text
     When the caller needs to be transferred:
     1. Confirm with the caller that you're transferring them
-    2. Use warm_transfer to connect them with the appropriate team
+    2. Use transferCall and provide context about what they need help with
     ```
   </Accordion>
 
   <Accordion title="Reference tool names exactly as shown">
-    Always use the exact internal name (e.g., `warm_transfer`, not "transfer warmly" or "do a warm transfer"). The AI maps your instructions to the tool by its name.
+    Always use the exact model-facing name (e.g., `transferCall`, not "transfer the call" or "do a warm transfer"). The AI maps your instructions to the tool by its name.
   </Accordion>
 </AccordionGroup>
