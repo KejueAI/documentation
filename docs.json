@@ -39,6 +39,7 @@
             "group": "Core Concepts",
             "pages": [
               "core-concepts/personas",
+              "core-concepts/prompting",
               "core-concepts/tools",
               "core-concepts/knowledge",
               "core-concepts/memory"
