@@ -32,7 +32,7 @@ Give the agent a library of reaction openers to rotate through:
 Then the next sentence. **Never** go straight from the caller's pain point into the next checklist item. This single behaviour does more for sounding human than anything else.
 
 <Info>
-The reaction openers should match the persona's register. A warm Australian patient consultant uses *"Aw, that's no good"*. A dry British B2B specialist uses *"Mm, alright"* or *"Right, yep."* Don't paste the same library across personas.
+The reaction openers should match the persona's register. A warm patient consultant uses *"Aw, that's no good"*. A dry B2B specialist uses *"Mm, alright"* or *"Right, yep."* Don't paste the same library across personas.
 </Info>
 
 ## Vary acknowledgements
@@ -146,16 +146,17 @@ Always. Two questions in one turn produces compound answers the agent can't pars
 If your agent enters a call from more than one starting state (cold dial, warm transfer, scheduled callback, return caller), give it a variable like `{{call_mode}}` and a distinct opener per mode. The worst tonal failure on a warm transfer is the receiving agent re-introducing the company and re-qualifying — the caller has already heard all that.
 
 ```text
-Mode C — live warm handoff:
-  "Cheers Ben — hi {{first_name}}, Henry here. From what Ben mentioned —
-   you're with {{insurer}}, around {{headcount}} on the policy — what
-   I'd recommend is fifteen minutes with Naman. Tuesday at ten, or
-   Wednesday afternoon?"
+Mode C — live warm handoff from a colleague:
+  "Cheers — hi {{first_name}}, Sara here from Max Insurance. From what
+   my colleague mentioned — you're with {{current_provider}}, around
+   {{headcount}} on the policy — what I'd recommend is fifteen minutes
+   with our senior advisor. Tuesday at ten, or Wednesday afternoon?"
 
 Mode D — scheduled callback:
-  "Hi {{first_name}}, Henry here from Beneple — Ben mentioned you and
-   I'd be in touch. He gave me the rundown. What I wanted to do is just
-   lock in fifteen with Naman. Tuesday ten or Wednesday afternoon?"
+  "Hi {{first_name}}, Sara from Max Insurance — my colleague mentioned
+   you and I'd be in touch. They gave me the rundown. What I wanted to
+   do is just lock in fifteen with our senior advisor. Tuesday ten or
+   Wednesday afternoon?"
 ```
 
 Pass the context as variables; render them via `{{var}}` in the prompt. See [Inject Context](/guides/inject-context) for live updates mid-call.
@@ -207,7 +208,7 @@ Spell out anything the TTS will get wrong:
 - Whole numbers, not digits: *"forty-eight-hour policy"*, not *"four eight."*
 - Currency naturally: *"$75"* → *"seventy-five dollars."*
 - Acronyms: *"C-B-C-T"*, *"U-A-E"*, *"H-R."*
-- Brand names with phonetic spellings: *"Allianz"* → *"AH-lee-ahnz."* *"Beneple"* → *"BEN-ep-pul."*
+- Brand names with phonetic spellings: *"Allianz"* → *"AH-lee-ahnz."* Any company or product name your TTS mispronounces should get a phonetic hint in the prompt.
 - Phone numbers in groups with pauses, never as a digit stream.
 - Times always with AM/PM. Never 24-hour spoken aloud.
 - Dates in words: *"Tuesday the twelfth of November"*, not *"11/12."*
@@ -231,8 +232,9 @@ Before any line in the prompt, ask: *would a real \[role\] actually say this on 
 This same test belongs **inside** the prompt as the agent's last instruction:
 
 ```text
-Before you say any sentence, ask yourself: would a real Dubai-based
-outreach specialist say this exact line on a real call? If no, rephrase.
+Before you say any sentence, ask yourself: would a real outreach
+specialist at Max Insurance say this exact line on a real call?
+If no, rephrase.
 ```
 
 It's a small, cheap nudge that catches a surprising amount of brochure-voice in flight.
@@ -258,7 +260,7 @@ When you sit down to write a new persona prompt:
 
 Prompts are not write-once. The way to improve them is to **listen to real call recordings** and write down every tell — every spot the agent sounded like a bot — then add a single-line rule to the prompt that prevents that specific tell. Don't refactor; just append.
 
-The best prompts grow this way: a thin first draft, then twenty iterations of *"caller said X, agent did Y, that's wrong, add rule."* The Kate prompt at Nova Dental and the Ben/Henry prompts at Beneple both got to their current state through that loop, not from a single big rewrite.
+The best prompts grow this way: a thin first draft, then twenty iterations of *"caller said X, agent did Y, that's wrong, add rule."*
 
 ## Next Steps
 
