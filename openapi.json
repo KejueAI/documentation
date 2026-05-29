@@ -79,21 +79,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -135,19 +153,29 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "403": {
-            "description": "Persona limit reached",
+            "description": "The workspace's plan limit on agents has been reached.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent limit reached for your plan",
+                  "code": "FORBIDDEN",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -155,9 +183,14 @@
             }
           },
           "409": {
-            "description": "Duplicate name",
+            "description": "Another agent in this workspace already uses this name.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "An agent with this name already exists",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -165,11 +198,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -213,24 +259,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -289,31 +347,56 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -348,24 +431,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -426,41 +521,71 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "A voice config for this language locale already exists on the agent.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Voice config for locale 'en-US' already exists",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -506,24 +631,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -593,31 +730,56 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Voice config not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Voice config not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "config_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -661,24 +823,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Voice config not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Voice config not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "config_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -739,41 +913,71 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "The named tool is already attached to this agent.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool 'send_email' is already attached to this agent",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -819,24 +1023,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -889,24 +1105,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Tool attachment not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool attachment not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "tool_name": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -965,31 +1193,56 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Agent not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Agent not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "agent_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1033,9 +1286,29 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request was syntactically valid but failed semantic checks (e.g. invalid phone, inactive agent).",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid phone number: not a valid E.164 number",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1043,9 +1316,16 @@
             }
           },
           "404": {
-            "description": "Contact or persona not found",
+            "description": "Contact not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Contact not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "contact_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1053,9 +1333,22 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1193,9 +1486,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1203,11 +1501,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1249,9 +1560,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1259,9 +1575,16 @@
             }
           },
           "404": {
-            "description": "Call not found",
+            "description": "Call not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Call not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "job_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1320,9 +1643,14 @@
             "description": "Successful Response"
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1330,9 +1658,16 @@
             }
           },
           "404": {
-            "description": "Call not found",
+            "description": "Call not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Call not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "call_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1340,9 +1675,14 @@
             }
           },
           "409": {
-            "description": "Call is not active",
+            "description": "The call is not currently active, so context cannot be injected.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Call is not active",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1350,11 +1690,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1398,9 +1751,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1408,9 +1766,14 @@
             }
           },
           "400": {
-            "description": "Invalid request",
+            "description": "The request was semantically invalid (e.g. mismatched IDs or inactive resource).",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "persona_id does not match voice config's persona",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1418,9 +1781,16 @@
             }
           },
           "404": {
-            "description": "Persona or contact not found",
+            "description": "Persona not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Persona not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "persona_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1428,9 +1798,22 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1515,9 +1898,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1525,11 +1913,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1571,9 +1972,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1581,9 +1987,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1630,9 +2043,14 @@
             "description": "Successful Response"
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1640,9 +2058,14 @@
             }
           },
           "400": {
-            "description": "Campaign cannot be deleted in current status",
+            "description": "Campaign must be in draft, cancelled, completed, or failed status to be deleted.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign cannot be deleted in current status",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1650,9 +2073,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1761,9 +2191,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1771,9 +2206,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1781,11 +2223,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1866,9 +2321,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1876,9 +2336,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1886,11 +2353,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1932,9 +2412,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1942,9 +2427,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1998,9 +2490,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2008,9 +2505,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2081,9 +2585,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2091,9 +2600,14 @@
             }
           },
           "400": {
-            "description": "Invalid status transition or no contacts",
+            "description": "Campaign is in a status that cannot transition to active, or has no contacts to call.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign cannot be started: invalid status or no contacts",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2101,9 +2615,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2111,11 +2632,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2157,9 +2691,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2167,9 +2706,14 @@
             }
           },
           "400": {
-            "description": "Campaign is not active or scheduled",
+            "description": "Only campaigns in active or scheduled status can be paused.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign is not active or scheduled",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2177,9 +2721,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2233,9 +2784,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2243,9 +2799,14 @@
             }
           },
           "400": {
-            "description": "Campaign cannot be cancelled",
+            "description": "Campaign is in a terminal status (e.g. completed, failed) and cannot be cancelled.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign cannot be cancelled in its current status",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2253,9 +2814,16 @@
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Campaign not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "campaign_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2414,21 +2982,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2470,19 +3056,44 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
-          "409": {
-            "description": "Duplicate phone number",
+          "400": {
+            "description": "The phone or WhatsApp number could not be parsed into E.164 format.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid phone number: not a valid E.164 number",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Another contact in this workspace already has this phone number.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Contact with phone +15551234567 already exists",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2490,11 +3101,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2538,21 +3162,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2596,24 +3238,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Contact not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Contact not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "contact_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2672,31 +3326,71 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
+          },
+          "400": {
+            "description": "A provided phone or WhatsApp number could not be parsed into E.164 format.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid phone number: not a valid E.164 number",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
+            "description": "Contact not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Contact not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "contact_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2731,24 +3425,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Contact not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Contact not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "contact_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2787,14 +3493,19 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2845,9 +3556,29 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The persona, agent, or phone number is in an inactive state, or the phone number is invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Persona is not active",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2855,9 +3586,16 @@
             }
           },
           "404": {
-            "description": "Contact, persona, or agent not found",
+            "description": "Persona not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Persona not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "persona_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2865,9 +3603,22 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -2932,21 +3683,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2960,7 +3729,7 @@
           "Tools"
         ],
         "summary": "List Tools",
-        "description": "List custom HTTP tools for the workspace.\n\nOnly lists user-created HTTP tools. Registry (builtin/provider) tools\nare available automatically when attached to agents.",
+        "description": "List custom HTTP tools for the workspace.\n\nOnly lists user-created HTTP tools. Built-in system tools are\navailable automatically when attached to agents.",
         "operationId": "list_tools_tools_get",
         "security": [
           {
@@ -3003,21 +3772,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3059,19 +3846,44 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
-          "409": {
-            "description": "Duplicate tool name",
+          "400": {
+            "description": "The tool config references one or more workspace secrets that do not exist.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Unknown secrets referenced: my_api_key",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Another tool in this workspace already uses this name.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Tool with name 'send_email' already exists",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -3079,11 +3891,24 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3127,24 +3952,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Tool not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "tool_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -3203,41 +4040,86 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
+          },
+          "400": {
+            "description": "The updated tool config references one or more workspace secrets that do not exist.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unknown secrets referenced: my_api_key",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
+            "description": "Tool not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "tool_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "The requested name is already taken by another tool in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool with name 'send_email' already exists",
+                  "code": "CONFLICT",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3272,24 +4154,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Tool not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Tool not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "tool_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -3334,9 +4228,14 @@
             }
           },
           "401": {
-            "description": "Invalid or missing API key",
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -3380,14 +4279,19 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -3451,21 +4355,39 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3507,21 +4429,54 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
-          "422": {
-            "description": "Validation Error",
+          "400": {
+            "description": "One of the requested event types is invalid, persona_id is missing for a persona-scoped webhook, or signing_method requires a secret.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid event type: foo.bar",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request body or query parameters failed validation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3565,24 +4520,36 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Webhook not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Webhook not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "webhook_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -3641,31 +4608,71 @@
             }
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
+          },
+          "400": {
+            "description": "One of the requested event types is invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid event type: foo.bar",
+                  "code": "BAD_REQUEST",
+                  "details": {}
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
+            "description": "Webhook not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Webhook not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "webhook_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Request body or query parameters failed validation.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Validation failed",
+                  "code": "VALIDATION_ERROR",
+                  "details": {
+                    "errors": [
+                      {
+                        "field": "body.name",
+                        "message": "Field required",
+                        "type": "missing"
+                      }
+                    ]
+                  }
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3700,24 +4707,36 @@
             "description": "Successful Response"
           },
           "401": {
+            "description": "Missing or invalid API key. Pass a workspace API key in the `X-API-Key` header.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Invalid or missing API key",
+                  "code": "UNAUTHORIZED",
+                  "details": {}
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Unauthorized"
+            }
           },
           "404": {
+            "description": "Webhook not found in this workspace.",
             "content": {
               "application/json": {
+                "example": {
+                  "error": "Webhook not found",
+                  "code": "NOT_FOUND",
+                  "details": {
+                    "webhook_id": "non_existent_id"
+                  }
+                },
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -3869,6 +4888,16 @@
         ],
         "title": "AgentListResponse",
         "description": "Paginated list of agents."
+      },
+      "AgentReaction": {
+        "type": "string",
+        "enum": [
+          "speaks",
+          "silent",
+          "speaks-once"
+        ],
+        "title": "AgentReaction",
+        "description": "How the voice agent reacts when a tool call fires.\n\nUltravox-specific. Ignored by chat tool-calling.\n- SPEAKS: agent speaks naturally around the tool call (Ultravox default)\n- SILENT: agent stays silent until the tool returns\n- SPEAKS_ONCE: agent speaks at most one filler line during the tool call"
       },
       "AgentResponse": {
         "properties": {
@@ -5873,6 +6902,17 @@
             "title": "Retry Count",
             "description": "Number of retries on failure",
             "default": 0
+          },
+          "precomputable": {
+            "type": "boolean",
+            "title": "Precomputable",
+            "description": "Voice only: if true, Ultravox may invoke this tool speculatively. Safe only for non-mutating tools. Ignored for chat.",
+            "default": false
+          },
+          "agent_reaction": {
+            "$ref": "#/components/schemas/AgentReaction",
+            "description": "Voice only: how the agent reacts when this tool fires. Ignored for chat.",
+            "default": "speaks"
           }
         },
         "type": "object",
@@ -6276,9 +7316,21 @@
           "delay_seconds": {
             "type": "integer",
             "maximum": 120.0,
-            "minimum": 5.0,
+            "minimum": 1.0,
             "title": "Delay Seconds",
             "description": "Seconds of silence before sending this message"
+          },
+          "end_behavior": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Behavior",
+            "description": "What to do after speaking this message. One of END_BEHAVIOR_UNSPECIFIED, END_BEHAVIOR_HANG_UP_SOFT, END_BEHAVIOR_HANG_UP_STRICT. Maps to Ultravox endBehavior."
           }
         },
         "type": "object",
@@ -6290,6 +7342,7 @@
         "description": "A message the agent sends after a period of silence from the user.",
         "example": {
           "delay_seconds": 15,
+          "end_behavior": "END_BEHAVIOR_UNSPECIFIED",
           "message": "Are you still there?"
         }
       },
@@ -6790,6 +7843,15 @@
             "type": "integer",
             "title": "Retry Count"
           },
+          "precomputable": {
+            "type": "boolean",
+            "title": "Precomputable",
+            "default": false
+          },
+          "agent_reaction": {
+            "$ref": "#/components/schemas/AgentReaction",
+            "default": "speaks"
+          },
           "created_at": {
             "anyOf": [
               {
@@ -7153,6 +8215,29 @@
               }
             ],
             "title": "Retry Count"
+          },
+          "precomputable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precomputable",
+            "description": "Voice only: speculative execution flag. Ignored for chat."
+          },
+          "agent_reaction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgentReaction"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Voice only: agent's reaction when the tool fires. Ignored for chat."
           }
         },
         "type": "object",
