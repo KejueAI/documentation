@@ -1,0 +1,251 @@
+---
+title: Dynamic Prompt Variables
+description: Personalize agent prompts and first messages with contact data and per-call context
+icon: braces
+---
+
+## Overview
+
+Dynamic variables let you write one reusable agent prompt and fill in customer-specific details when a call or chat starts.
+
+Use variables in prompts with double curly braces:
+
+```text
+Hi {{contact.first_name|default:there}}, this is {{agent_name}} from {{company_name}}.
+```
+
+Kejue renders the variables before the agent starts speaking. For live updates during an active call, use [Mid-Call Context Injection](/guides/inject-context) instead.
+
+## Where variables work
+
+You can use dynamic variables in:
+
+- Voice agent system prompts
+- Voice agent first messages
+- Per-call prompt overrides
+- Chat agent prompts
+
+You can pass custom values from the dashboard's **Context Variables** / **Request Data** fields, or through the API using the `context` object.
+
+<Note>
+Voice prompts and first messages support the full nested `contact` object, including custom contact metadata. Chat prompts currently support workspace variables and flat contact aliases such as `{{contact_name}}`, `{{contact_first_name}}`, `{{contact_company}}`, and `{{contact_phone}}`.
+</Note>
+
+## Syntax
+
+| Pattern | Meaning |
+|---------|---------|
+| `{{variable_name}}` | Simple variable |
+| `{{contact.first_name}}` | Nested contact field |
+| `{{name|default:there}}` | Fallback when the value is missing or empty |
+| `{{name|upper}}` | Transform to uppercase |
+| `{{name|lower}}` | Transform to lowercase |
+| `{{name|title}}` | Transform to title case |
+| `{{name|strip}}` | Trim whitespace |
+| `{{name|capitalize}}` | Capitalize the first character |
+
+You can chain defaults and transforms:
+
+```text
+{{contact.company|default:your company|title}}
+```
+
+## Built-in variables
+
+### Contact variables
+
+Use the nested `contact` object for customer details:
+
+| Variable | Description |
+|----------|-------------|
+| `{{contact.first_name}}` | Contact first name |
+| `{{contact.last_name}}` | Contact last name |
+| `{{contact.full_name}}` | Full name built from first and last name |
+| `{{contact.phone}}` | Phone number |
+| `{{contact.whatsapp_number}}` | WhatsApp number |
+| `{{contact.email}}` | Email address |
+| `{{contact.company}}` | Company name |
+| `{{contact.job_title}}` | Job title |
+| `{{contact.country}}` | Country |
+| `{{contact.timezone}}` | Timezone |
+| `{{contact.language}}` | Preferred language |
+| `{{contact.metadata.<key>}}` | Custom contact metadata field |
+
+<Warning>
+`{{customer_name}}` is not a built-in automatic alias. Use `{{contact.full_name}}`, `{{contact.first_name}}`, or pass your own `customer_name` value in `context`.
+</Warning>
+
+### Custom contact fields
+
+Custom fields on a contact are stored in `metadata` and can be referenced from voice prompts and first messages with `{{contact.metadata.<key>}}`.
+
+For example, a contact with this metadata:
+
+```json
+{
+  "policy_type": "health insurance",
+  "renewal_date": "2026-06-30",
+  "account_manager": "Sara"
+}
+```
+
+can be used in a prompt like this:
+
+```text
+You are calling {{contact.first_name|default:the customer}} about their {{contact.metadata.policy_type|default:policy}} renewal on {{contact.metadata.renewal_date}}.
+If they ask for a human, mention that {{contact.metadata.account_manager|default:their account manager}} can follow up.
+```
+
+When contacts are imported from CSV or Excel, recognized columns such as `phone`, `first_name`, `email`, `company`, `job_title`, `language`, and `tags` are mapped to normal contact fields. Unrecognized columns are stored as contact metadata using the original column header as the key.
+
+For a CSV like:
+
+```csv
+phone,first_name,Policy Type,renewal_date
++971501234567,Mariam,health insurance,2026-06-30
+```
+
+the custom fields are available as:
+
+```text
+{{contact.metadata.Policy Type}}
+{{contact.metadata.renewal_date}}
+```
+
+Prefer simple metadata keys like `policy_type`, `renewal_date`, or `account_manager` when possible. They are easier to read in prompts and safer to reuse across imports and API-created contacts.
+
+Contact create, update, and bulk-create API requests can also set metadata directly:
+
+```json
+{
+  "phone": "+971501234567",
+  "first_name": "Mariam",
+  "metadata": {
+    "policy_type": "health insurance",
+    "renewal_date": "2026-06-30"
+  }
+}
+```
+
+Metadata keys are not automatically available as top-level variables. Use `{{contact.metadata.policy_type}}` for reusable contact data, or pass `policy_type` in per-call `context` if you want to reference it as `{{policy_type}}`.
+
+### Agent and persona variables
+
+| Variable | Description |
+|----------|-------------|
+| `{{agent_name}}` | Current voice agent name |
+| `{{persona.name}}` | Persona name |
+| `{{persona.description}}` | Persona description |
+| `{{phone_number}}` | Contact phone number |
+| `{{memory}}` | Memory context for the contact, when available |
+
+### Date and time variables
+
+| Variable | Example |
+|----------|---------|
+| `{{current_date}}` | `2026-05-30` |
+| `{{current_time}}` | `14:35` |
+| `{{current_day}}` | `Saturday` |
+| `{{current_month}}` | `May` |
+| `{{current_year}}` | `2026` |
+
+### Workspace variables
+
+If your workspace has saved template variables, you can use them directly:
+
+```text
+You are calling on behalf of {{company_name}}.
+Our support hours are {{business_hours}}.
+The product being discussed is {{product_name}}.
+```
+
+Workspace variables are useful for values that are shared across many agents, such as company names, product names, policies, disclaimers, or business hours.
+
+## Pass custom variables for one call
+
+When creating a call, include a `context` object. Each key becomes available in the prompt.
+
+```bash
+curl -X POST https://api.kejue.co/api/v1/calls \
+  -H "X-API-Key: kej_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contact": {
+      "phone": "+971501234567",
+      "first_name": "Mariam",
+      "company": "Acme Trading"
+    },
+    "persona_id": "per_abc123",
+    "context": {
+      "policy_type": "health insurance",
+      "renewal_month": "June",
+      "advisor_name": "Sara"
+    }
+  }'
+```
+
+Then reference those values in the prompt:
+
+```text
+You are {{advisor_name}}.
+You are calling {{contact.first_name|default:the customer}} about their {{policy_type}} renewal in {{renewal_month}}.
+Keep the call concise and ask one question at a time.
+```
+
+## JavaScript example
+
+```javascript
+const response = await fetch('https://api.kejue.co/api/v1/calls', {
+  method: 'POST',
+  headers: {
+    'X-API-Key': 'kej_live_...',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    contact: {
+      phone: '+971501234567',
+      first_name: 'Mariam',
+      company: 'Acme Trading',
+    },
+    persona_id: 'per_abc123',
+    context: {
+      policy_type: 'health insurance',
+      renewal_month: 'June',
+      advisor_name: 'Sara',
+    },
+  }),
+});
+
+const call = await response.json();
+```
+
+## Variable precedence
+
+If the same variable name exists in multiple places, more specific values win:
+
+1. System date/time variables
+2. Workspace variables
+3. Persona data
+4. Contact data
+5. Conversation data
+6. Per-call `context` variables
+
+Per-call `context` variables have the highest priority. Avoid custom keys named `contact`, `persona`, `conversation`, or `memory` unless you intentionally want to override those namespaces.
+
+## Best practices
+
+- Use `{{contact.first_name|default:there}}` instead of assuming every contact has a name.
+- Use clear, snake_case custom variable names such as `policy_type`, `appointment_time`, or `case_reason`.
+- Keep context values short and specific. Long background information belongs in memory, knowledge, or mid-call context injection.
+- Do not put secrets, API keys, or credentials in prompt variables.
+- For scheduled calls, pass all required per-call context when creating the call.
+
+## Troubleshooting
+
+| Issue | Fix |
+|-------|-----|
+| The agent says a blank value | Add a default, e.g. `{{contact.first_name|default:there}}` |
+| A custom variable does not render | Check that the key in `context` exactly matches the prompt variable |
+| A contact custom field does not render | Use the metadata namespace, e.g. `{{contact.metadata.policy_type}}`, and check the imported header or API metadata key |
+| `{{customer_name}}` is blank | Use `{{contact.full_name}}` or pass `customer_name` in `context` |
+| The value changes after the call starts | Variables are rendered at call start; use [Mid-Call Context Injection](/guides/inject-context) for live updates |
