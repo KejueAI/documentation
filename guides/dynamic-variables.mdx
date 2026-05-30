@@ -1,7 +1,7 @@
 ---
 title: Dynamic Prompt Variables
 description: Personalize agent prompts and first messages with contact data and per-call context
-icon: braces
+icon: code
 ---
 
 ## Overview
@@ -28,21 +28,21 @@ You can use dynamic variables in:
 You can pass custom values from the dashboard's **Context Variables** / **Request Data** fields, or through the API using the `context` object.
 
 <Note>
-Voice prompts and first messages support the full nested `contact` object, including custom contact metadata. Chat prompts currently support workspace variables and flat contact aliases such as `{{contact_name}}`, `{{contact_first_name}}`, `{{contact_company}}`, and `{{contact_phone}}`.
+Voice prompts and first messages support the full nested `contact` object, including custom contact metadata. Chat prompts currently support workspace variables and flat contact aliases such as `contact_name`, `contact_first_name`, `contact_company`, and `contact_phone`.
 </Note>
 
 ## Syntax
 
 | Pattern | Meaning |
 |---------|---------|
-| `{{variable_name}}` | Simple variable |
-| `{{contact.first_name}}` | Nested contact field |
-| `{{name|default:there}}` | Fallback when the value is missing or empty |
-| `{{name|upper}}` | Transform to uppercase |
-| `{{name|lower}}` | Transform to lowercase |
-| `{{name|title}}` | Transform to title case |
-| `{{name|strip}}` | Trim whitespace |
-| `{{name|capitalize}}` | Capitalize the first character |
+| <code>&#123;&#123;variable_name&#125;&#125;</code> | Simple variable |
+| <code>&#123;&#123;contact.first_name&#125;&#125;</code> | Nested contact field |
+| <code>&#123;&#123;name&#124;default:there&#125;&#125;</code> | Fallback when the value is missing or empty |
+| <code>&#123;&#123;name&#124;upper&#125;&#125;</code> | Transform to uppercase |
+| <code>&#123;&#123;name&#124;lower&#125;&#125;</code> | Transform to lowercase |
+| <code>&#123;&#123;name&#124;title&#125;&#125;</code> | Transform to title case |
+| <code>&#123;&#123;name&#124;strip&#125;&#125;</code> | Trim whitespace |
+| <code>&#123;&#123;name&#124;capitalize&#125;&#125;</code> | Capitalize the first character |
 
 You can chain defaults and transforms:
 
@@ -58,26 +58,26 @@ Use the nested `contact` object for customer details:
 
 | Variable | Description |
 |----------|-------------|
-| `{{contact.first_name}}` | Contact first name |
-| `{{contact.last_name}}` | Contact last name |
-| `{{contact.full_name}}` | Full name built from first and last name |
-| `{{contact.phone}}` | Phone number |
-| `{{contact.whatsapp_number}}` | WhatsApp number |
-| `{{contact.email}}` | Email address |
-| `{{contact.company}}` | Company name |
-| `{{contact.job_title}}` | Job title |
-| `{{contact.country}}` | Country |
-| `{{contact.timezone}}` | Timezone |
-| `{{contact.language}}` | Preferred language |
-| `{{contact.metadata.<key>}}` | Custom contact metadata field |
+| <code>&#123;&#123;contact.first_name&#125;&#125;</code> | Contact first name |
+| <code>&#123;&#123;contact.last_name&#125;&#125;</code> | Contact last name |
+| <code>&#123;&#123;contact.full_name&#125;&#125;</code> | Full name built from first and last name |
+| <code>&#123;&#123;contact.phone&#125;&#125;</code> | Phone number |
+| <code>&#123;&#123;contact.whatsapp_number&#125;&#125;</code> | WhatsApp number |
+| <code>&#123;&#123;contact.email&#125;&#125;</code> | Email address |
+| <code>&#123;&#123;contact.company&#125;&#125;</code> | Company name |
+| <code>&#123;&#123;contact.job_title&#125;&#125;</code> | Job title |
+| <code>&#123;&#123;contact.country&#125;&#125;</code> | Country |
+| <code>&#123;&#123;contact.timezone&#125;&#125;</code> | Timezone |
+| <code>&#123;&#123;contact.language&#125;&#125;</code> | Preferred language |
+| <code>&#123;&#123;contact.metadata.&lt;key&gt;&#125;&#125;</code> | Custom contact metadata field |
 
 <Warning>
-`{{customer_name}}` is not a built-in automatic alias. Use `{{contact.full_name}}`, `{{contact.first_name}}`, or pass your own `customer_name` value in `context`.
+<code>&#123;&#123;customer_name&#125;&#125;</code> is not a built-in automatic alias. Use <code>&#123;&#123;contact.full_name&#125;&#125;</code>, <code>&#123;&#123;contact.first_name&#125;&#125;</code>, or pass your own `customer_name` value in `context`.
 </Warning>
 
 ### Custom contact fields
 
-Custom fields on a contact are stored in `metadata` and can be referenced from voice prompts and first messages with `{{contact.metadata.<key>}}`.
+Custom fields on a contact are stored in `metadata` and can be referenced from voice prompts and first messages with <code>&#123;&#123;contact.metadata.&lt;key&gt;&#125;&#125;</code>.
 
 For example, a contact with this metadata:
 
@@ -127,27 +127,27 @@ Contact create, update, and bulk-create API requests can also set metadata direc
 }
 ```
 
-Metadata keys are not automatically available as top-level variables. Use `{{contact.metadata.policy_type}}` for reusable contact data, or pass `policy_type` in per-call `context` if you want to reference it as `{{policy_type}}`.
+Metadata keys are not automatically available as top-level variables. Use <code>&#123;&#123;contact.metadata.policy_type&#125;&#125;</code> for reusable contact data, or pass `policy_type` in per-call `context` if you want to reference it as <code>&#123;&#123;policy_type&#125;&#125;</code>.
 
 ### Agent and persona variables
 
 | Variable | Description |
 |----------|-------------|
-| `{{agent_name}}` | Current voice agent name |
-| `{{persona.name}}` | Persona name |
-| `{{persona.description}}` | Persona description |
-| `{{phone_number}}` | Contact phone number |
-| `{{memory}}` | Memory context for the contact, when available |
+| <code>&#123;&#123;agent_name&#125;&#125;</code> | Current voice agent name |
+| <code>&#123;&#123;persona.name&#125;&#125;</code> | Persona name |
+| <code>&#123;&#123;persona.description&#125;&#125;</code> | Persona description |
+| <code>&#123;&#123;phone_number&#125;&#125;</code> | Contact phone number |
+| <code>&#123;&#123;memory&#125;&#125;</code> | Memory context for the contact, when available |
 
 ### Date and time variables
 
 | Variable | Example |
 |----------|---------|
-| `{{current_date}}` | `2026-05-30` |
-| `{{current_time}}` | `14:35` |
-| `{{current_day}}` | `Saturday` |
-| `{{current_month}}` | `May` |
-| `{{current_year}}` | `2026` |
+| <code>&#123;&#123;current_date&#125;&#125;</code> | `2026-05-30` |
+| <code>&#123;&#123;current_time&#125;&#125;</code> | `14:35` |
+| <code>&#123;&#123;current_day&#125;&#125;</code> | `Saturday` |
+| <code>&#123;&#123;current_month&#125;&#125;</code> | `May` |
+| <code>&#123;&#123;current_year&#125;&#125;</code> | `2026` |
 
 ### Workspace variables
 
@@ -234,7 +234,7 @@ Per-call `context` variables have the highest priority. Avoid custom keys named 
 
 ## Best practices
 
-- Use `{{contact.first_name|default:there}}` instead of assuming every contact has a name.
+- Use <code>&#123;&#123;contact.first_name&#124;default:there&#125;&#125;</code> instead of assuming every contact has a name.
 - Use clear, snake_case custom variable names such as `policy_type`, `appointment_time`, or `case_reason`.
 - Keep context values short and specific. Long background information belongs in memory, knowledge, or mid-call context injection.
 - Do not put secrets, API keys, or credentials in prompt variables.
@@ -244,8 +244,8 @@ Per-call `context` variables have the highest priority. Avoid custom keys named 
 
 | Issue | Fix |
 |-------|-----|
-| The agent says a blank value | Add a default, e.g. `{{contact.first_name|default:there}}` |
+| The agent says a blank value | Add a default, e.g. <code>&#123;&#123;contact.first_name&#124;default:there&#125;&#125;</code> |
 | A custom variable does not render | Check that the key in `context` exactly matches the prompt variable |
-| A contact custom field does not render | Use the metadata namespace, e.g. `{{contact.metadata.policy_type}}`, and check the imported header or API metadata key |
-| `{{customer_name}}` is blank | Use `{{contact.full_name}}` or pass `customer_name` in `context` |
+| A contact custom field does not render | Use the metadata namespace, e.g. <code>&#123;&#123;contact.metadata.policy_type&#125;&#125;</code>, and check the imported header or API metadata key |
+| <code>&#123;&#123;customer_name&#125;&#125;</code> is blank | Use <code>&#123;&#123;contact.full_name&#125;&#125;</code> or pass `customer_name` in `context` |
 | The value changes after the call starts | Variables are rendered at call start; use [Mid-Call Context Injection](/guides/inject-context) for live updates |

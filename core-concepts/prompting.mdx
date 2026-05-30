@@ -143,7 +143,7 @@ Always. Two questions in one turn produces compound answers the agent can't pars
 
 ## Mode-dependent openings
 
-If your agent enters a call from more than one starting state (cold dial, warm transfer, scheduled callback, return caller), give it a variable like `{{call_mode}}` and a distinct opener per mode. The worst tonal failure on a warm transfer is the receiving agent re-introducing the company and re-qualifying — the caller has already heard all that.
+If your agent enters a call from more than one starting state (cold dial, warm transfer, scheduled callback, return caller), give it a variable like <code>&#123;&#123;call_mode&#125;&#125;</code> and a distinct opener per mode. The worst tonal failure on a warm transfer is the receiving agent re-introducing the company and re-qualifying — the caller has already heard all that.
 
 ```text
 Mode C — live warm handoff from a colleague:
@@ -159,7 +159,7 @@ Mode D — scheduled callback:
    Wednesday afternoon?"
 ```
 
-Pass the context as variables; render them via `{{var}}` in the prompt. See [Dynamic Prompt Variables](/guides/dynamic-variables) for call-start variables and [Inject Context](/guides/inject-context) for live updates mid-call.
+Pass the context as variables; render them via <code>&#123;&#123;var&#125;&#125;</code> in the prompt. See [Dynamic Prompt Variables](/guides/dynamic-variables) for call-start variables and [Inject Context](/guides/inject-context) for live updates mid-call.
 
 ## The two-challenge rule for objections
 
